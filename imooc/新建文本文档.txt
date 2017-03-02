@@ -1,0 +1,1 @@
+express jade（模板） moment（格式化时间） mongoose（服务器） underscore(更新数据)
