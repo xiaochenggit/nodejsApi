@@ -25,6 +25,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // 静态资源获取
 app.use(express.static(path.join(__dirname,"static")));
 
+// 入口文件添加 moment
+app.locals.moment = require("moment");
+
 // 监听端口
 app.listen(port);
 
@@ -119,7 +122,6 @@ app.get("/movie/:id",function(req,res){
 	var id = req.params.id;
 	// 
 	Movie.findById(id,function(err,movie){
-		console.log(movie);
 		res.render("detail",{
 			title : 'IMOOC ' ,
 			movie : movie
@@ -216,6 +218,21 @@ app.get("/admin/updata/:id",function(req,res){
 				title : '后台更新页面',
 				movie : movie 
 			})
+		})
+	}
+})
+
+// list 删除请求
+
+app.delete("/admin/list",function(req,res){
+	var id = req.query.id;
+	if (id) {
+		Movie.remove({_id : id},function(err,movie){
+			if (err) {
+				console.log(err);
+			}else{
+				res.json({success : 1});
+			}
 		})
 	}
 })
