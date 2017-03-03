@@ -20,9 +20,9 @@ module.exports = function (app){
 	// 登陆
 	app.post("/user/signup",User.signup);
 	// 登陆页面
-	app.get("user/signup",User.showSignup);
+	app.get("/signup",User.showSignup);
 	// 注册页面
-	app.get("user/signin",User.showSignin);
+	app.get("/signin",User.showSignin);
 	// 电影列表
 	app.get("/admin/movie/list",Movie.list);
 	// 电影后台录入

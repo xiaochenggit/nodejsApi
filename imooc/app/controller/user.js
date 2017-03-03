@@ -103,7 +103,6 @@ exports.signupRequired = function (req,res,next){
 //  验证是否是管理员
 exports.adminRequired = function (req,res,next){
 	var user = req.session.user ;
-	console.log(user.role);
 	if ( user.role > 10 ) {
 		next();
 	}else{
