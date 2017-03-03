@@ -1,1 +1,5 @@
-express jade（模板） moment（格式化时间） mongoose（服务器） underscore(更新数据)
+express jade（模板） moment（格式化时间） mongoose（服务器） underscore(更新数据) grunt -g grunt-cli-g
+
+npm -install grunt-contrib-watch --save-dev 
+npm -install grunt-contrib-nodemon --save-dev npm install grunt-nodemon
+npm -install grunt-contrib-concurrent--save-dev (npm install grunt-concurrent)

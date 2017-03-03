@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var _ = require("underscore");
 var Movie = require("./models/movie.js");
+var User = require("./models/user.js");
 // 设置端口 默认值是3000
 var port = process.env.PORT || 3000;
 
@@ -66,22 +67,7 @@ console.log(" imooc is started on port " + 'localhost:' + port);
 // 		}]
 // 	})
 // })
-// index 首页 不需要伪造数据了
-app.get("/",function(req,res){
 
-	// 模型的fetch方法找到全部数据
-
-	Movie.fetch(function(err,movies){
-		if (err) {
-			console.log(err); 
-		}
-		// 渲染模板
-		res.render("index",{
-			title : 'IMOOC 首页',
-			movies : movies
-		})
-	})
-})
 
 //  list page 列表页面
 app.get("/admin/list",function(req,res){
@@ -128,8 +114,6 @@ app.get("/movie/:id",function(req,res){
 		})
 	})
 })
-
-
 
 //  admin page
 // app.get("/admin/movie",function(req,res){
@@ -235,4 +219,64 @@ app.delete("/admin/list",function(req,res){
 			}
 		})
 	}
+})
+
+//  signin 注册
+
+app.post("/user/signin",function(req,res){
+	var _user = req.body.user;
+	// req.param("user")
+	
+	// 是否重复注册名字
+	User.findOne( { name : _user.name },function(err,user){
+		if(err){
+			console.log(err)
+		}
+		if(user){
+			return res.redirect("/");
+		}else{
+			var user = new User(_user);
+			user.save(function(err,user){
+				if (err) {
+					console.log(err);
+				}else{
+					res.redirect("/user/list");
+				}
+			})
+		}
+	});
+})
+
+// userlist 首页 不需要伪造数据了
+app.get("/user/list",function(req,res){
+
+	// 模型的fetch方法找到全部数据
+
+	User.fetch(function(err,users){
+		if (err) {
+			console.log(err); 
+		}
+		// 渲染模板
+		res.render("userlist",{
+			title : '用户列表',
+			users : users
+		})
+	})
+})
+
+// index 首页 不需要伪造数据了
+app.get("*",function(req,res){
+
+	// 模型的fetch方法找到全部数据
+
+	Movie.fetch(function(err,movies){
+		if (err) {
+			console.log(err); 
+		}
+		// 渲染模板
+		res.render("index",{
+			title : 'IMOOC 首页',
+			movies : movies
+		})
+	})
 })
