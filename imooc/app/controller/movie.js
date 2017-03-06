@@ -28,6 +28,9 @@ exports.detail = function(req,res){
 		// })
 		Comment.find({movie : id})
 		.populate("from",'name')
+		.populate("to",'name')
+		.populate("replay.to","name")
+		.populate("replay.from","name")
 		.exec(function(err,comments){
 			res.render("detail",{
 				title : movie.title ,

@@ -16,6 +16,18 @@ var CommentSchema = new Schema({
 		type : ObjectId,
 		ref : "User"
 	},
+	// 叠楼效果 数组
+	replay: [{
+		from : {
+			type : ObjectId,
+			ref : "User"
+		},
+		to : {
+			type : ObjectId,
+			ref : "User"
+		},
+		content : String
+	}],
 	to : {
 		type : ObjectId,
 		ref : "User"
