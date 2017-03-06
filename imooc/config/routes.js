@@ -1,6 +1,7 @@
 var Index = require("../app/controller/index.js");
 var Movie = require("../app/controller/movie.js");
 var User = require("../app/controller/user.js");
+var Comment = require("../app/controller/comment.js");
  
 // 添加几个主要页面的路由
 module.exports = function (app){
@@ -19,10 +20,12 @@ module.exports = function (app){
 	app.post("/user/signin",User.signin);
 	// 登陆
 	app.post("/user/signup",User.signup);
+
 	// 登陆页面
 	app.get("/signup",User.showSignup);
 	// 注册页面
 	app.get("/signin",User.showSignin);
+
 	// 电影列表
 	app.get("/admin/movie/list",Movie.list);
 	// 电影后台录入
@@ -32,9 +35,13 @@ module.exports = function (app){
 	// 电影保存
 	app.post("/admin/movie/new",Movie.save);
 	// 电影详情页面
-	app.get("/movie/:id",Movie.detail);
+	app.get("/admin/movie/:id",Movie.detail);
 	// 电影删除
 	app.delete("/admin/movie/list",User.signupRequired,User.adminRequired,Movie.del);
+
+	// comment 评论
+
+	app.post("/user/comment",User.signupRequired,Comment.save)
 	// 首页
 	app.get("*",Index.index);
 }

@@ -95,7 +95,7 @@ exports.list  = function(req,res){
 exports.signupRequired = function (req,res,next){
 	var user = req.session.user;
 	if (!user) {
-		res.redirect("/signup");
+		return res.redirect("/signup");
 	}else{
 		next();
 	}

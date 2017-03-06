@@ -1,4 +1,5 @@
 var Movie = require("../models/movie.js");
+var Comment = require("../models/comment.js");
 var _ = require("underscore");
 //  list page 列表页面
 exports.list = function(req,res){
@@ -22,9 +23,17 @@ exports.detail = function(req,res){
 	var id = req.params.id;
 	// 
 	Movie.findById(id,function(err,movie){
-		res.render("detail",{
-			title : 'IMOOC ' ,
-			movie : movie
+		// Comment.find({ movie : id},function(err,comments){
+			
+		// })
+		Comment.find({movie : id})
+		.populate("from",'name')
+		.exec(function(err,comments){
+			res.render("detail",{
+				title : movie.title ,
+				movie : movie,
+				comments : comments
+			})
 		})
 	})
 }
