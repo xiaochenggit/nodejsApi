@@ -2,6 +2,7 @@ var Index = require("../app/controller/index.js");
 var Movie = require("../app/controller/movie.js");
 var User = require("../app/controller/user.js");
 var Comment = require("../app/controller/comment.js");
+var Catetory = require("../app/controller/catetory.js");
  
 // 添加几个主要页面的路由
 module.exports = function (app){
@@ -42,6 +43,11 @@ module.exports = function (app){
 	// comment 评论
 
 	app.post("/user/comment",User.signupRequired,Comment.save)
+
+	//  分类
+	app.get("/admin/catetory/new",User.signupRequired,User.adminRequired,Catetory.new);
+	app.post("/admin/catetory",User.signupRequired,User.adminRequired,Catetory.save);
+	app.get("/admin/catetory/list",Catetory.list);
 	// 首页
 	app.get("*",Index.index);
 }

@@ -3,7 +3,23 @@ block content
 	.container
 		.row
 			form.form-horizontal(method="post",action='/admin/movie/new')
-				input(type="hidden",name="movie[_id]",value="#{movie._id}")
+				if movie._id
+					input(type="hidden",name="movie[_id]",value="#{movie._id}")
+				.form-group
+					label.col-sm-2.control-label(for="inputCatetoryName") 电影分类
+					.col-sm-10
+						input#inputCatetoryName.form-control(type="text",name="movie[catetoryName]",value=movie.catetoryName)
+				.form-group
+					label.col-sm-2.control-label(for="inputCatetoryName") 分类选择
+					.col-sm-10
+						each cat in catetorires
+							label.radio-inline
+								if movie._id
+									input(type="radio",name="movie[catetory]",value="#{cat._id}",checked=cat._id.toString()==movie.catetory.toString())
+									span #{cat.name}
+								else
+									input(type="radio",name="movie[catetory]",value="#{cat._id}")
+									span #{cat.name}
 				.form-group
 					label.col-sm-2.control-label(for="inputTitle") 电影名字
 					.col-sm-10

@@ -1,5 +1,6 @@
 var Movie = require("../models/movie.js");
 var Comment = require("../models/comment.js");
+var Catetory = require("../models/catetory.js");
 var _ = require("underscore");
 //  list page 列表页面
 exports.list = function(req,res){
@@ -42,18 +43,23 @@ exports.detail = function(req,res){
 }
 
 exports.new = function(req,res){
-	res.render("admin",{
-		title : 'IMOOC 后台录入页面',
-		movie : {
-			title : '',
-			doctor : "",
-			country : "",
-			year : "",
-			poster : "",
-			flash : "",
-			summary : '',
-			language : ''
-		}
+	Catetory.find({},function(arr,catetories){
+		res.render("admin",{
+			title : 'IMOOC 后台录入页面',
+			catetorires : catetories,
+			movie : {
+				title : '',
+				doctor : "",
+				country : "",
+				year : "",
+				poster : "",
+				flash : "",
+				summary : '',
+				language : '',
+				catetoryName : "",
+				catetory : ""
+			}
+		})
 	})
 }
 
@@ -62,9 +68,10 @@ exports.new = function(req,res){
 exports.save = function(req,res){
 	var id = req.body.movie._id;
 	var movieObj = req.body.movie;
+	console.log(movieObj);
 	var _movie;
 	// 更新
-	if (id !== "undefined") {
+	if (id) {
 		Movie.findById(id,function(err,movie){
 			if (err) {
 				console.log(err);
@@ -77,27 +84,25 @@ exports.save = function(req,res){
 					console.log(err);
 				}
 				// 重新定向
-				res.redirect("/movie/" + movie._id)
+				res.redirect("/admin/movie/" + movie._id)
 			})
 		})
 	}else {		
 		// 创建
-		_movie = new Movie({
-			doctor : movieObj.doctor,
-			title : movieObj.title,
-			country : movieObj.country,
-			language : movieObj.language,
-			year : movieObj.year,
-			poster : movieObj.poster,
-			summary : movieObj.summary,
-			flash : movieObj.flash
-		})
+		_movie = new Movie(movieObj);
 		// 保存
+		var catetoryId = _movie.catetory;
 		_movie.save(function(err,movie){
 			if (err) {
 				console.log(err)
+			}else {
+				Catetory.findById(catetoryId,function(err,catetory){
+					catetory.movies.push(movie._id);
+					catetory.save(function(err,catetory){
+						res.redirect("/admin/movie/" + movie._id)
+					})
+				})
 			}
-			res.redirect("/movie/" + movie._id)
 		})
 	}
 }
@@ -107,9 +112,12 @@ exports.updata = function(req,res){
 	var id = req.params.id;
 	if (id) {
 		Movie.findById(id,function(err,movie){
-			res.render("admin",{
-				title : '后台更新页面',
-				movie : movie 
+			Catetory.find({},function(err,catetorires){
+				res.render("admin",{
+					title : '后台更新页面',
+					movie : movie ,
+					catetorires,catetorires
+				})
 			})
 		})
 	}

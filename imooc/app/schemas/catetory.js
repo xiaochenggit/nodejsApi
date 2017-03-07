@@ -2,26 +2,18 @@
 
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+var ObjectId = mongoose.Schema.ObjectId;
 // 声明
 
-var MovieSchema = new Schema({
+var CatetorySchema = new Schema({
 
-	// 跟电影相关的字段
+	// 跟设计分类的数据模型
 
-	doctor:String,
-	title:String,
-	language:String,
-	country:String,
-	summary:String,
-	flash:String,
-	poster:String,
-	year : Number,
-	// 分类
-	catetory : {
+	name : String,
+	movies : [{
 		type : ObjectId,
-		ref : "Catetory"
-	},
+		ref : "Movie"
+	}],
 	// 创建、更新 时间
 	meta : {
 		createAt : {
@@ -37,7 +29,7 @@ var MovieSchema = new Schema({
 
 // 添加方法
 
-MovieSchema.pre("sava",function(next){
+CatetorySchema.pre("sava",function(next){
 
 	// 如果是新创建的数据 创建时间和更新时间为当前时间、否则更新时间设为当前时间
 
@@ -51,7 +43,7 @@ MovieSchema.pre("sava",function(next){
 
 // 添加一些静态方法
 
-MovieSchema.statics = {
+CatetorySchema.statics = {
 
 	// 取出数据库的所有数据 按照更新时间排序并执行回调方法
 
@@ -73,4 +65,4 @@ MovieSchema.statics = {
 
 // 模式导出
 
-module.exports = MovieSchema;
+module.exports = CatetorySchema;
