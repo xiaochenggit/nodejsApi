@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+	https://api.douban.com/v2/book/1220562
+	<script type="text/javascript">
+		$(function(){
+			$.ajax({
+ 2             type: 'GET',
+ 3             url: 'https://api.douban.com/v2/book/1220562',
+ 5             dataType: "jsonp",
+ 8             success: function (data) {
+ 9                 console.log(data);
+10             },
+11             error: function (data) {
+12                 console.log(data);
+13             }
+14         });
+		})
+	</script>
+</body>
+</html>
