@@ -1,0 +1,24 @@
+extends ../include/head
+block content
+	.container
+		table
+			thead
+				tr
+					th 电影名字
+					th 电影导演
+					th 更新时间
+					th 查看
+					th 修改
+					th 删除
+			tobody
+				each item in movies
+					tr
+						td #{item.title}
+						td #{item.doctor}
+						td 更新时间
+						td
+							a.btn.btn-default(href="/movie/:#{item._id}") 查看
+						td  
+							a.btn.btn-primary(href="") 修改
+						td 
+							a.btn.btn-danger.del 删除

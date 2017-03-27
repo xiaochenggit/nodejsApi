@@ -1,0 +1,15 @@
+extends ../include/head
+block content
+	.container
+		.row
+			each item in movies
+				.col-xs-4.col-md-3
+					.thumbnail
+						a(href="/movie/:#{item._id}")
+							img(src="#{item.porste}",alt="#{item.title}")
+						.coption
+							h3 #{item.title}
+							h4 #{item.doctor}
+							p 
+								a(href="/movie/:#{item._id}")
+									button.btn.btn-default 查看
