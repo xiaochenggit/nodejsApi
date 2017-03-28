@@ -23,6 +23,7 @@ function filterRespones (html) {
 		var obj = {};
 		var name = $(this).find('.cYellow .cGreen').text();
 		obj['name'] = name;
+		obj['imgsrc'] = $(this).find('.c-fl img').attr('src');
 		var items = $(this).find('.c-fl p');
 		var arr = ['type','theme','performance','style','battle','fit']
 		items.each( function (index , element) {
