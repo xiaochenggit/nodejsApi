@@ -1,0 +1,17 @@
+{
+  "name": "socket-io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon --exec babel-node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "socket.io": "^1.7.3"
+  }
+}
