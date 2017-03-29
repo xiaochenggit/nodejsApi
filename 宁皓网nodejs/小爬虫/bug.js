@@ -19,11 +19,12 @@ var Arraydate = [];
 function filterRespones (html) {
 	var $ = cheerio.load(html);
 	var list = $('.game-bd-item');
-	list.each( function(element, index) {
+	list.each( function(index, element) {
 		var obj = {};
 		var name = $(this).find('.cYellow .cGreen').text();
 		obj['name'] = name;
-		obj['imgsrc'] = $(this).find('.c-fl img').attr('src');
+		obj['url'] = $(this).find('.c-fl a').attr('href');
+		obj['imgsrc'] = $(this).find('.c-fl a img').attr('data-url');
 		var items = $(this).find('.c-fl p');
 		var arr = ['type','theme','performance','style','battle','fit']
 		items.each( function (index , element) {
@@ -34,7 +35,7 @@ function filterRespones (html) {
 			Arraydate.push(obj);
 		});
 	});
-	console.log(JSON.stringify(Arraydate));
+	// console.log(JSON.stringify(Arraydate));
 	fs.writeFile('data.json', JSON.stringify(Arraydate), (error) => {
 		if (error) {
 			console.log(error);
