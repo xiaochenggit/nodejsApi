@@ -1,6 +1,6 @@
 // 模式
 const mongoose = require('mongoose');
-const Schema = mongoose.schema;
+const Schema = mongoose.Schema;
 var movieSchema = new Schema({
 	name: String,
 	poster: String,
