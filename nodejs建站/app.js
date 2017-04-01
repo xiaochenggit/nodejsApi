@@ -3,10 +3,12 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const Moment = require('moment');
 // 替换数据专用
 const _ = require('underscore');
 // 引入模型
 const Movie = require('./models/movie');
+const User = require('./models/user');
 // 设置端口号 
 const port = 8080;
 // 实例化
@@ -49,7 +51,6 @@ app.get('/movie/:id', (request, response) => {
 })
 
 app.post('/admin/movie/new', (request ,response) => {
-	console.log(request.body.movie);
 	var id = request.body.movie._id;
 	var movieObj = request.body.movie;
 	var _movie;
@@ -67,13 +68,14 @@ app.post('/admin/movie/new', (request ,response) => {
 		})
 	} else {
 		_movie = new Movie({
-			name : movieObj.name,
+			name: movieObj.name,
 			author : movieObj.author,
-			country : movieObj.country,
+			poster: movieObj.poster,
+			year : parseInt(movieObj.year),
 			language : movieObj.language,
-			poster : movieObj.poster,
+			country : movieObj.country,
 			swf : movieObj.swf,
-			summary : movieObj.summary
+			summary : movieObj.summary,
 		});
 		_movie.save((err, movie) => {
 				if (err) {
@@ -124,12 +126,63 @@ app.get('/admin/movie/admin', (request, response) => {
 		} else {
 			response.render('pages/movie-admin',{
 				title: '电影管理页面',
-				movies : movies
+				movies : movies,
+				moment : Moment
 			});
 		}
 	});
 })
-
+// 删除电影
+app.delete('/admin/movie/detail', (request, response) => {
+	var id = request.query.id ;
+	if (id) {
+		Movie.remove({_id : id}, (err) => {
+			if (err) {
+				console.log('删除出错')
+			} else {
+				response.json({success: 1});
+			}
+		})
+	}
+});
+// user注册
+app.post('/user/signup', (request, response) => {
+	var _user = request.body.user;
+	User.findOne( {name: _user.name }, (error,user) => {
+		console.log(user);
+		if (error) {
+			console.log(error);
+		} else {
+			if (user) {
+				response.redirect("/");
+			} else {
+				var user = new User(_user);
+				user.save((error, user) => {
+					if (error) {
+						console.log(error);
+					} else {
+						response.redirect("/admin/user/list");
+					}
+				})
+			}
+		}
+	})
+	
+})
+// user 列表页面
+app.get('/admin/user/list', (request, response) => {
+	User.fetch( (error,users) => {
+		if (error) {
+			console.log(error)
+		} else {
+			response.render('pages/user-list',{
+				title : '用户列表页面',
+				users : users,
+				moment : Moment
+			})
+		}
+	}) 
+})
 // 启动服务
 app.listen(port);
 

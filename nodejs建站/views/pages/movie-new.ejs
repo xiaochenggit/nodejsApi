@@ -12,6 +12,10 @@
 				    <label for="">导演</label>
 				    <input type="text" class="form-control" name="movie[author]" placeholder="导演" value="<%= movie.author %>">
 				  </div>
+				   <div class="form-group">
+				    <label for="">年份</label>
+				    <input type="text" class="form-control" name="movie[year]" placeholder="年份" value="<%= movie.year %>">
+				  </div>
 				  <div class="form-group">
 				    <label for="">国家</label>
 				    <input type="text" class="form-control" name="movie[country]" placeholder="国家" value="<%= movie.country %>">
@@ -29,8 +33,8 @@
 				    <input type="text" class="form-control" name="movie[swf]" placeholder="地址" value="<%= movie.swf %>">
 				  </div>
 				  <div class="form-group">
-				    <label for="">地址</label>
-				    <input type="text" class="form-control" name="movie[summary]" placeholder="地址" value="<%= movie.summary %>">
+				    <label for="">简介</label>
+				   	<textarea class="form-control" rows="3" name="movie[summary]"><%= movie.summary %></textarea>
 				  </div>
 				  <!-- <div class="form-group">
 				    <label for="exampleInputFile">File input</label>

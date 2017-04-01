@@ -1,1 +1,8 @@
-express  jade(ejs)ģ�� moment��ʱ���ʽ���� mongoose������
+express  jade(ejs)Ä£°å moment£¨Ê±¼ä¸ñÊ½»¯£© mongoose·þÎñÆ÷ 
+grunt-contrib-watch监听文件增删改，重新执行任务  grunt-nodemon实时监听app.js  grunt-concurrent监控慢任务SASS LESS 等
+npm install grunt
+npm install grunt-cli -g （会自动配置grunt的环境变量）
+npm install grunt-contrib-watch -save-dev （监视文件的增删改活动，并自动执行定义好的任务）
+npm install grunt-nodemon -save-dev （监视入口文件app.js的改动，自动重起app.js服务）
+npm install grunt-concurrent -save-dev （管理慢任务，比如某些模块的编译，能优化构建的时间，并可用来跑多个阻塞的任务，例如watch和nodemon任务）
+（-save-dev会自动把模块加到package.jason文件里去）
