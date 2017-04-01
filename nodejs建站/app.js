@@ -145,6 +145,19 @@ app.delete('/admin/movie/detail', (request, response) => {
 		})
 	}
 });
+// 删除用户
+app.delete('/admin/user/detail', (request, response) => {
+	var id = request.query.id ;
+	if (id) {
+		User.remove({_id : id}, (err) => {
+			if (err) {
+				console.log('删除出错')
+			} else {
+				response.json({success: 1});
+			}
+		})
+	}
+});
 // user注册
 app.post('/user/signup', (request, response) => {
 	var _user = request.body.user;

@@ -14,7 +14,7 @@ $(function (){
 		})
 	});
 	// 用户删除
-	$('#userDelete').click(function (){
+	$('.userDelete').click(function (){
 		console.log('da');
 		var $this = $(this);
 		var id = $(this).attr('data-id');
