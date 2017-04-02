@@ -1,7 +1,7 @@
 // 模式
 const mongoose = require('mongoose');
 // 密码加密算法
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 // 加密强度
 const SALT_WORK_FACTOR = 10; 
 const Schema = mongoose.Schema;
@@ -35,22 +35,41 @@ UserSchema.pre('save', function (next) {
 	} else {
 		this.meta.updateAt = Date.now();
 	}
-
-	bcrypt.genSalt(SALT_WORK_FACTOR, function (error, salt) {
-		if (error) {
-			return next(error);
-		} else {
-			bcrypt.hash(user.password, salt, (error, hash) => {
-				if (error) {
-					return next(error);
-				} else {
-					user.password = hash;
-					next();
-				}
-			})
-		}
-	})
+	next()
+	// bcrypt.genSalt(SALT_WORK_FACTOR, function (error, salt) {
+	// 	if (error) {
+	// 		return next(error);
+	// 	} else {
+	// 		bcrypt.hash(user.password, salt, (error, hash) => {
+	// 			if (error) {
+	// 				return next(error);
+	// 			} else {
+	// 				user.password = hash;
+	// 				next();
+	// 			}
+	// 		})
+	// 	}
+	// })
 });
+
+// 添加实例方法 用来匹配密码
+
+UserSchema.methods = {
+	comparePassword: function (_password, cb) {
+		// bcrypt.compare(_password,this.password, (err, isMatch) => {
+		// 	if (err) {
+		// 		return cb(err);
+		// 	} else {
+		// 		cb(null,isMatch);
+		// 	}
+		// })
+		if (_password == this.password) {
+			return cb(null,true);
+		} else {
+			return cb(null,false);
+		}
+	}
+}
 
 // 添加一些静态的方法
 

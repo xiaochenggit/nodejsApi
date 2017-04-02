@@ -161,11 +161,12 @@ app.delete('/admin/user/detail', (request, response) => {
 // user注册
 app.post('/user/signup', (request, response) => {
 	var _user = request.body.user;
+	console.log(_user);
 	User.findOne( {name: _user.name }, (error,user) => {
-		console.log(user);
 		if (error) {
 			console.log(error);
 		} else {
+
 			if (user) {
 				response.redirect("/");
 			} else {
@@ -182,6 +183,34 @@ app.post('/user/signup', (request, response) => {
 	})
 	
 })
+
+// user 登录
+app.post('/user/signin', (request, response) => {
+	var _user = request.body.user;
+	User.findOne({name : _user.name},(error, user) => {
+		if (error) {
+			console.log(error);
+		} else {
+			if (!user) {
+				console.log('请输入正确的用户名!')
+			} else {
+				user.comparePassword(_user.password , (error, isMatch) => {
+					if (error) {
+						console.log('匹配密码出现错误');
+					} else {
+						if (isMatch) {
+							console.log('登录成功');
+							response.redirect('/');
+						} else {
+							console.log('密码输入错误');
+						}
+					}
+				})
+			}
+		}
+	})
+})
+
 // user 列表页面
 app.get('/admin/user/list', (request, response) => {
 	User.fetch( (error,users) => {

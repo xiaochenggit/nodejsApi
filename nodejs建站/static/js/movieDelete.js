@@ -30,7 +30,6 @@ $(function (){
 	});
 	// 注册
 	$('#signupBtn').click(function () {
-		console.log("1");
 		var $form = $("#signupForm");
 		var $err = true;
 		if(!$('#question').val()){
@@ -40,6 +39,9 @@ $(function (){
 		if ($("#userPassWord").val()!=$("#reUserPassWord").val()) {
 			alert('两次密码输入的不同');
 			$err = false;
+		}
+		if (!$("#key").val()) {
+			alert("答案不能为空");
 		}
 		if (!$err) {
 			return false;
