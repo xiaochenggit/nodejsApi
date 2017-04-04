@@ -99,3 +99,23 @@ exports.list = (request, response) => {
 		}
 	}) 
 }
+
+// 权限设置
+// 登录权限
+exports.signinRequired = (request, response, next) => {
+	var user = request.session.user;
+	if (!user) {
+		response.redirect('/user/signin');
+	} else {
+		next();
+	}
+}
+// 管理员权限
+exports.adminRequired = (request, response, next) => {
+	var user = request.session.user;
+	if (user.role >= 10) {
+		next();
+	} else {
+		response.redirect('/user/signin');
+	}
+}

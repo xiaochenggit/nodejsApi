@@ -14,6 +14,11 @@ var UserSchema = new Schema({
 	password : '',
 	question : String,
 	key : String,
+	// 权限相关
+	role: {
+		type: Number,
+		default : 0
+	},
 	// 更新相关
 	meta : {
 		createAt : {
