@@ -1,5 +1,6 @@
 // 引入模型
 const Movie = require('../models/movie');
+const Comment = require('../models/comment');
 // 替换数据专用
 const _ = require('underscore');
 // 
@@ -11,10 +12,22 @@ exports.movie = (request, response) => {
 		if (err) {
 			console.log(err)
 		} else {
-			response.render('pages/movie-detail', {
-				title: '电影详情页面',
-				movie : movie
-			});
+			Comment
+			.find({movie : movie.id})
+			// 提取出 from  user 里的name
+			.populate('from', 'name')
+			.exec((err, comments) => {
+				console.log(comments);
+				if (err) {
+					console.log(err);
+				} else {
+					response.render('pages/movie-detail', {
+						title: '电影详情页面',
+						movie : movie,
+						comments : comments
+					});
+				}
+			})
 		}
 	});
 }

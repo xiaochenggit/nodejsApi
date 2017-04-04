@@ -1,5 +1,6 @@
 const Movie = require('../controllers/movie');
 const User = require('../controllers/user');
+const Comment = require('../controllers/comment');
 const Index = require('../controllers/index');
 const routes = function (app) {
 	app.use((request, response, next) => {
@@ -39,5 +40,7 @@ const routes = function (app) {
 	app.delete('/admin/user/detail', User.signinRequired, User.adminRequired, User.delete);
 	// user 列表页面
 	app.get('/admin/user/list', User.signinRequired, User.adminRequired, User.list);
+	// 评论
+	app.post('/movie/comment', User.signinRequired, Comment.save)
 }
 module.exports = routes;
