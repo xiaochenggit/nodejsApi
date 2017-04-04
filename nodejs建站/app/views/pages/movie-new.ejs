@@ -1,0 +1,54 @@
+<% include  ../common/header.ejs %>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<form action="/admin/movie/new" method="post" >
+					<input type="hidden" name = 'movie[_id]' value="<%= movie._id %>">
+				  <div class="form-group">
+				    <label for="">电影名字</label>
+				    <input type="text" class="form-control" name="movie[name]" placeholder="电影名字" value="<%=movie.name%>">
+				  </div>
+				  <div class="form-group">
+				    <label for="">导演</label>
+				    <input type="text" class="form-control" name="movie[author]" placeholder="导演" value="<%= movie.author %>">
+				  </div>
+				   <div class="form-group">
+				    <label for="">年份</label>
+				    <input type="text" class="form-control" name="movie[year]" placeholder="年份" value="<%= movie.year %>">
+				  </div>
+				  <div class="form-group">
+				    <label for="">国家</label>
+				    <input type="text" class="form-control" name="movie[country]" placeholder="国家" value="<%= movie.country %>">
+				  </div>
+				  <div class="form-group">
+				    <label for="">语种</label>
+				    <input type="text" class="form-control" name="movie[language]" placeholder="语种" value="<%= movie.language %>">
+				  </div>
+				  <div class="form-group">
+				    <label for="">海报地址</label>
+				    <input type="text" class="form-control" name="movie[poster]" placeholder="海报地址" value="<%=  movie.poster %>">
+				  </div>
+				  <div class="form-group">
+				    <label for="">地址</label>
+				    <input type="text" class="form-control" name="movie[swf]" placeholder="地址" value="<%= movie.swf %>">
+				  </div>
+				  <div class="form-group">
+				    <label for="">简介</label>
+				   	<textarea class="form-control" rows="3" name="movie[summary]"><%= movie.summary %></textarea>
+				  </div>
+				  <!-- <div class="form-group">
+				    <label for="exampleInputFile">File input</label>
+				    <input type="file" id="exampleInputFile">
+				    <p class="help-block">Example block-level help text here.</p>
+				  </div>
+				  <div class="checkbox">
+				    <label>
+				      <input type="checkbox"> Check me out
+				    </label>
+				  </div> -->
+				  <button type="submit" class="btn btn-default">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+<% include  ../common/footer.ejs %>

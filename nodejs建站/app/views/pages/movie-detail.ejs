@@ -1,0 +1,25 @@
+<% include  ../common/header.ejs %>
+	<div class="container">
+		 <div class="row">
+		 	<div class="col-sm-8">
+		 		<embed src="/swf/<%= movie.swf %>" type="application/x-shockwave-flash" align="middle" allowFullScreen='true' quality="high" width="720" height ='600'>
+		 	</div>
+		 	<div class="col-sm-4">
+		 		<dl class="dl-horizontal">
+		 			<dt>电影名</dt>
+		 			<dd><%= movie.name %></dd>
+		 			<dt>导演</dt>
+		 			<dd><%= movie.author %></dd>
+		 			<dt>年份</dt>
+		 			<dd><%= movie.year %></dd>
+		 			<dt>国家</dt>
+		 			<dd><%= movie.country %></dd>
+		 			<dt>语种</dt>
+		 			<dd><%= movie.language %></dd>
+		 			<dt>简介</dt>
+		 			<dd><%= movie.summary %></dd>
+		 		</dl>
+		 	</div>
+		 </div>
+	</div>
+<% include  ../common/footer.ejs %>

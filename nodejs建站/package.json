@@ -19,7 +19,8 @@
     "express-session": "^1.15.2",
     "grunt": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-nodemon": "^0.4.2"
+    "grunt-nodemon": "^0.4.2",
+    "morgan": "^1.8.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
