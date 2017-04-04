@@ -16,6 +16,7 @@ exports.movie = (request, response) => {
 			.find({movie : movie.id})
 			// 提取出 from  user 里的name
 			.populate('from', 'name')
+			.populate('reply.from reply.to','name')
 			.exec((err, comments) => {
 				console.log(comments);
 				if (err) {

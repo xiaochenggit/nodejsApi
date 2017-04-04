@@ -47,5 +47,29 @@ $(function (){
 		if (!$err) {
 			return false;
 		}
-	})
+	});
+
+	// 评论回复
+	$(".reComment").click(function(event) {
+		var cid = $(this).attr("data-cid");
+		var tid = $(this).attr("data-tid");
+		var $comment = $("#commentForm");
+		if ($("#commentId").length > 0) {
+			$("#commentId").val(cid);
+			$("#toId").val(tid);
+		} else {
+			$('<input>').attr({
+				type: 'hidden',
+				value: cid,
+				id : 'commentId',
+				name: 'comment[cid]'
+			}).appendTo($comment)
+			$('<input>').attr({
+				type: 'hidden',
+				value: tid,
+				id: 'toid',
+				name: 'comment[tid]'
+			}).appendTo($comment)
+		}
+	});
 })

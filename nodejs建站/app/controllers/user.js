@@ -31,7 +31,7 @@ exports.signup = (request, response) => {
 						console.log(error);
 					} else {
 						request.session.user = user;
-						response.redirect("/admin/user/list");
+						response.redirect("/");
 					}
 				})
 			}
