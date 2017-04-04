@@ -22,9 +22,8 @@ exports.signup = (request, response) => {
 		if (error) {
 			console.log(error);
 		} else {
-
 			if (user) {
-				response.redirect("/");
+				response.redirect("/user/signin");
 			} else {
 				var user = new User(_user);
 				user.save((error, user) => {
@@ -38,6 +37,18 @@ exports.signup = (request, response) => {
 			}
 		}
 	})	
+}
+// get showSignup
+exports.showSignup = (request, response) => {
+	response.render('pages/user-signup',{
+		title : '用户注册页面'
+	})
+}
+// get showSignin
+exports.showSignin = (request, response) => {
+	response.render('pages/user-signin',{
+		title : '用户登陆页面'
+	})
 }
 // 登出
 exports.logout = (request, response) => {

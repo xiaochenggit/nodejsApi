@@ -32,6 +32,10 @@ const routes = function (app) {
 	app.post('/user/signup', User.signup)
 	// 登出
 	app.get('/user/logout', User.logout)
+	// 注册
+	app.get('/user/signup', User.showSignup);
+	// 登陆
+	app.get('/user/signin', User.showSignin);
 	// user 登录
 	app.post('/user/signin', User.signin)
 	// user 列表页面

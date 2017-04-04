@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><%=title %></title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<script type="text/javascript" src="/js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src='/js/movieDelete.js'></script>
+</head>
+<body>
+	<div class="container">
+		<h1><%=title %></h1>
+		<div class="row">
+			<div class="col-md-5">
+				<form action="/user/signup" method="post" id='signupForm'>
+						<div class="form-group">
+							<label for="userName">用户名 :</label>
+							<input type="text" class="form-control" id="userName" placeholder='用户名' name='user[name]'></div>
+						<div class="form-group">
+							<label for="userPassWord">密码 :</label>
+							<input type="password" class="form-control" id="userPassWord" placeholder="密码" name='user[password]'></div>
+						<div class="form-group">
+							<label for="reUserPassWord">确认密码 :</label>
+							<input type="password" class="form-control" id="reUserPassWord" placeholder="密码" name=''></div>
+						<div class="form-group">
+							<label for="question">密保问题 :</label>
+							<input type="text" class="form-control" id="question" placeholder='密保问题' name='user[question]'></div>
+						<div class="form-group">
+							<label for="key">答案 :</label>
+							<input type="text" class="form-control" id="key" placeholder='答案' name='user[key]'>
+						</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="submit" class="btn btn-success" id="signupBtn">提交</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

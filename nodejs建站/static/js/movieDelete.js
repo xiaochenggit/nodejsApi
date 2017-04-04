@@ -42,6 +42,7 @@ $(function (){
 		}
 		if (!$("#key").val()) {
 			alert("答案不能为空");
+			$err = false;
 		}
 		if (!$err) {
 			return false;
