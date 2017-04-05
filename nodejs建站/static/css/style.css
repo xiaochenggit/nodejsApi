@@ -6,3 +6,6 @@ body{
     vertical-align: top;
     padding-right: 10px;
 }
+.movie-list .thumbnail img{
+	height: 200px;
+}

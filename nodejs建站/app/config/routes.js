@@ -50,5 +50,7 @@ const routes = function (app) {
 	app.post('/admin/category/new', User.signinRequired, User.adminRequired, Category.save);
 	// 删除分类
 	app.delete('/admin/category/detail', User.signinRequired, User.adminRequired, Category.delete);
+
+	app.get('/movieSreach', Index.movieSreach)
 }
 module.exports = routes;

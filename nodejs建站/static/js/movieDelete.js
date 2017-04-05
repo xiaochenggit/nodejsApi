@@ -14,7 +14,7 @@ $(function (){
 		})
 	});
 	// movie删除
-	$('.deleteMove').click(function (){
+	$('.deleteMovie').click(function (){
 		var $this = $(this);
 		var id = $(this).attr('data-id');
 		$.ajax({
