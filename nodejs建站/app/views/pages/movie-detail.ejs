@@ -56,7 +56,11 @@
 		 			<dt>电影名</dt>
 		 			<dd><%= movie.name %></dd>
 		 			<dt>电影类型</dt>
-		 			<dd><%= category.name %></dd>
+		 			<dd>
+						<% movie.category.forEach(function(item){ %>
+							<%=item.name%>
+						<% }) %>
+		 			</dd>
 		 			<dt>导演</dt>
 		 			<dd><%= movie.author %></dd>
 		 			<dt>年份</dt>

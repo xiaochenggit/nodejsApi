@@ -11,10 +11,10 @@ var movieSchema = new Schema({
 	country : String,
 	swf : String,
 	summary : String,
-	category : {
+	category : [{
 		type : ObjectId,
 		ref : 'Category'
-	},
+	}],
 	// 更新相关
 	meta : {
 		createAt : {

@@ -15,7 +15,8 @@
 					  <div class="form-group">
 					    <label for="">分类选择</label>
 					   	<% categories.forEach(function (category){ %>
-					   	<input type="radio" name="movie[category]" value="<%= category._id %>" checked="<%= category.checked %>"/> <%= category.name %> | <%= category.checked %>
+					   	<!-- <input type="radio" name="movie[category]" value="<%= category._id %>" checked="<%= category.checked %>"/> <%= category.name %> | <%= category.checked %> -->
+					   	<input type="checkbox" name='movie[category]' value="<%=category._id%>"> <%= category.name %>
 					   	<% }) %>
 					  </div>
 				  <% } else {%>
@@ -23,7 +24,8 @@
 				  	<div class="form-group">
 					    <label for="">分类选择</label>
 					   	<% categories.forEach(function (category){ %>
-					   	<input type="radio" name="movie[category]" value="<%= category._id %>" /> <%= category.name %>
+					   	<!-- <input type="radio" name="movie[category]" value="<%= category._id %>" /> <%= category.name %> -->
+					   	<input type="checkbox" name='movie[category]' value="<%=category._id%>"> <%= category.name %>
 					   	<% }) %>
 				  	</div>
 				  <% } %>

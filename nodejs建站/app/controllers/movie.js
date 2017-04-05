@@ -13,9 +13,14 @@ exports.movie = (request, response) => {
 		if (err) {
 			console.log(err)
 		} else {
-			var category;
-			Category.findById(movie.category,(error,category) => {
-				Comment
+			var categoryArr = [];
+			movie.category.forEach( function(element, index) {
+				Category.findOne({_id:'58e461e493a5fd143078b1fd'},(error,category) => {
+					categoryArr.push(category);
+				})
+			});
+			console.log(categoryArr);
+			Comment
 				.find({movie : movie.id})
 				// 提取出 from  user 里的name
 				.populate('from', 'name')
@@ -32,7 +37,6 @@ exports.movie = (request, response) => {
 						});
 					}
 				})
-			})
 		}
 	});
 }
