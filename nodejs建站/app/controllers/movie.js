@@ -9,18 +9,13 @@ const Moment = require('moment');
 // 详情
 exports.movie = (request, response) => {
 	var id = request.params.id;
-	Movie.findById(id, (err,movie) => {
-		if (err) {
-			console.log(err)
-		} else {
-			var categoryArr = [];
-			movie.category.forEach( function(element, index) {
-				Category.findOne({_id:'58e461e493a5fd143078b1fd'},(error,category) => {
-					categoryArr.push(category);
-				})
-			});
-			console.log(categoryArr);
-			Comment
+	Movie.findOne({ _id: id })
+		.populate({ path: 'category' })
+		.exec((err,movie) => {
+			if (err) {
+				console.log(err)
+			} else {
+				Comment
 				.find({movie : movie.id})
 				// 提取出 from  user 里的name
 				.populate('from', 'name')
@@ -32,13 +27,12 @@ exports.movie = (request, response) => {
 						response.render('pages/movie-detail', {
 							title: '电影详情页面',
 							movie : movie,
-							comments : comments,
-							category : category
+							comments : comments
 						});
 					}
 				})
-		}
-	});
+			}
+	    });
 }
 // movie 创建 更新
 exports.save = (request ,response) => {
@@ -48,62 +42,99 @@ exports.save = (request ,response) => {
 	// 更新
 	if (id) {
 		Movie.findById(id, (err, movie) => {
-			_movie = _.extend(movie, movieObj) ;
-				_movie.save((err, movie) => {
-				var categoryId = _movie.category;
+			_movie = _.extend(movie, movieObj);
+			_movie.save((err, movie) => {
+				Category.find({},(error,categories) => {
+					categories.forEach( function(category, index) {
+						category.movies.forEach( function(element, index) {
+							console.log(element +'|'+ movie._id);
+							console.log(element == movie._id);
+							if (element == movie._id) {
+								category.movies.splice(index,1);
+							}
+						});
+						category.save((error,category) => {
+						})
+					});
+				})
+				var categories = _movie.category;
 				if (err) {
 					console.log(err)
 				} else {
-					Category.findById(categoryId, (error, category) => {
-						if (error) {
-							console.log(error);
-						} else {
-							category.movies.push(movie._id);
-							category.save((error,category) => {
-								response.redirect('/movie/' + movie._id);
+					// 是选择的
+					if (categories) {
+						categories.forEach( function(element, index) {
+							Category.findById(element, (error, category) => {
+								if (error) {
+									console.log(error);
+								} else {
+									category.movies.push(movie._id);
+									category.save((error,category) => {
+									})
+								}
 							})
-						}
-					})
+						});
+						response.redirect('/movie/' + movie._id);
+					} else {
+						// 填写的
+						// _category = new Category({
+						// 	name : movieObj.catetoryName,
+						// 	movies: [movie._id]
+						// });
+						// _category.save((err, category) => {
+						// 	if (err) {
+						// 		console.log(err)
+						// 	} else {
+						// 		// 电影分类保存
+						// 		movie.category = category._id ;
+						// 		movie.save((error,movie) =>{
+						// 			response.redirect('/movie/' + movie._id);
+						// 		})
+						// 	}
+						// })
+					}
 				}
 			})
 		})
 	} else {
-		console.log(movieObj);
+		console.log('false');
 		_movie = new Movie(movieObj);
 		_movie.save((err, movie) => {
-			var categoryId = _movie.category;
+			var categories = _movie.category;
 			if (err) {
 				console.log(err)
 			} else {
 				// 是选择的
-				if (categoryId) {
-					Category.findById(categoryId, (error, category) => {
-						if (error) {
-							console.log(error);
-						} else {
-							category.movies.push(movie._id);
-							category.save((error,category) => {
-								response.redirect('/movie/' + movie._id);
-							})
-						}
-					})
+				if (categories) {
+					categories.forEach( function(element, index) {
+						Category.findById(element, (error, category) => {
+							if (error) {
+								console.log(error);
+							} else {
+								category.movies.push(movie._id);
+								category.save((error,category) => {
+								})
+							}
+						})
+					});
+					response.redirect('/movie/' + movie._id);
 				} else {
 					// 填写的
-					_category = new Category({
-						name : movieObj.catetoryName,
-						movies: [movie._id]
-					});
-					_category.save((err, category) => {
-						if (err) {
-							console.log(err)
-						} else {
-							// 电影分类保存
-							movie.category = category._id ;
-							movie.save((error,movie) =>{
-								response.redirect('/movie/' + movie._id);
-							})
-						}
-					})
+					// _category = new Category({
+					// 	name : movieObj.catetoryName,
+					// 	movies: [movie._id]
+					// });
+					// _category.save((err, category) => {
+					// 	if (err) {
+					// 		console.log(err)
+					// 	} else {
+					// 		// 电影分类保存
+					// 		movie.category = category._id ;
+					// 		movie.save((error,movie) =>{
+					// 			response.redirect('/movie/' + movie._id);
+					// 		})
+					// 	}
+					// })
 				}
 			}
 		})
