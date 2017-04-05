@@ -1,5 +1,6 @@
 // 引入模型
 const Movie = require('../models/movie');
+const Category = require('../models/category');
 const Comment = require('../models/comment');
 // 替换数据专用
 const _ = require('underscore');
@@ -12,22 +13,25 @@ exports.movie = (request, response) => {
 		if (err) {
 			console.log(err)
 		} else {
-			Comment
-			.find({movie : movie.id})
-			// 提取出 from  user 里的name
-			.populate('from', 'name')
-			.populate('reply.from reply.to','name')
-			.exec((err, comments) => {
-				console.log(comments);
-				if (err) {
-					console.log(err);
-				} else {
-					response.render('pages/movie-detail', {
-						title: '电影详情页面',
-						movie : movie,
-						comments : comments
-					});
-				}
+			var category;
+			Category.findById(movie.category,(error,category) => {
+				Comment
+				.find({movie : movie.id})
+				// 提取出 from  user 里的name
+				.populate('from', 'name')
+				.populate('reply.from reply.to','name')
+				.exec((err, comments) => {
+					if (err) {
+						console.log(err);
+					} else {
+						response.render('pages/movie-detail', {
+							title: '电影详情页面',
+							movie : movie,
+							comments : comments,
+							category : category
+						});
+					}
+				})
 			})
 		}
 	});
@@ -41,63 +45,108 @@ exports.save = (request ,response) => {
 	if (id) {
 		Movie.findById(id, (err, movie) => {
 			_movie = _.extend(movie, movieObj) ;
-			_movie.save((err, movie) => {
+				_movie.save((err, movie) => {
+				var categoryId = _movie.category;
 				if (err) {
 					console.log(err)
 				} else {
-					response.redirect('/movie/' + movie._id);
+					Category.findById(categoryId, (error, category) => {
+						if (error) {
+							console.log(error);
+						} else {
+							category.movies.push(movie._id);
+							category.save((error,category) => {
+								response.redirect('/movie/' + movie._id);
+							})
+						}
+					})
 				}
 			})
 		})
 	} else {
-		_movie = new Movie({
-			name: movieObj.name,
-			author : movieObj.author,
-			poster: movieObj.poster,
-			year : parseInt(movieObj.year),
-			language : movieObj.language,
-			country : movieObj.country,
-			swf : movieObj.swf,
-			summary : movieObj.summary,
-		});
+		console.log(movieObj);
+		_movie = new Movie(movieObj);
 		_movie.save((err, movie) => {
-				if (err) {
-					console.log(err)
+			var categoryId = _movie.category;
+			if (err) {
+				console.log(err)
+			} else {
+				// 是选择的
+				if (categoryId) {
+					Category.findById(categoryId, (error, category) => {
+						if (error) {
+							console.log(error);
+						} else {
+							category.movies.push(movie._id);
+							category.save((error,category) => {
+								response.redirect('/movie/' + movie._id);
+							})
+						}
+					})
 				} else {
-					response.redirect('/movie/' + movie._id);
+					// 填写的
+					_category = new Category({
+						name : movieObj.catetoryName,
+						movies: [movie._id]
+					});
+					_category.save((err, category) => {
+						if (err) {
+							console.log(err)
+						} else {
+							// 电影分类保存
+							movie.category = category._id ;
+							movie.save((error,movie) =>{
+								response.redirect('/movie/' + movie._id);
+							})
+						}
+					})
 				}
-			})
+			}
+		})
 	}
 }
 // 创建电影页面
 exports.new = (request, response) => {
-	response.render('pages/movie-new', {
-		title: '电影创建页面',
-		movie: {
-			name : '',
-			year : '',
-			_id : '',
-			poster : '',
-			swf : '',
-			language : '',
-			country : '',
-			author : ''
-		}
+	Category.find({}, (error, categories) => {
+		response.render('pages/movie-new', {
+			title: '电影创建页面',
+			categories : categories,
+			movie: {
+				name : '',
+				year : '',
+				_id : '',
+				poster : '',
+				swf : '',
+				language : '',
+				country : '',
+				author : ''
+			}
+		});
 	});
 }
 // 更新电影页面
 exports.update = (request, response) => {
 	var id = request.params.id;
 	if (id) {
-		Movie.findById(id, (err, movie) => {
-			if (err) {
-				console.log(err)
-			} else {
-				response.render('pages/movie-new',{
-					movie : movie,
-					title : '电影更新页面'
-				})
-			}
+		Category.find({}, (error,categories) => {
+			Movie.findById(id, (err, movie) => {
+				if (err) {
+					console.log(err)
+				} else {
+					categories.forEach( function(element, index) {
+						if (movie.category.toString() == element._id.toString()) {
+							element.checked = true;
+						} else {
+							element.checked = false;
+						}
+					});
+					response.render('pages/movie-new',{
+						movie : movie,
+						title : '电影更新页面',
+						categories : categories
+					})
+				}
+			})
 		})
 	}
 }

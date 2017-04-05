@@ -1,20 +1,13 @@
-// 模式
+// 模式 分类
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const ObjectId = Schema.Types.ObjectId;
-var movieSchema = new Schema({
+var ObjectId = Schema.Types.ObjectId;
+var categorySchema = new Schema({
 	name: String,
-	author : String,
-	poster: String,
-	year : Number,
-	language : String,
-	country : String,
-	swf : String,
-	summary : String,
-	category : {
-		type : ObjectId,
-		ref : 'Category'
-	},
+	movies: [{
+		type: ObjectId,
+		ref: 'Movie'
+	}],
 	// 更新相关
 	meta : {
 		createAt : {
@@ -28,7 +21,7 @@ var movieSchema = new Schema({
 	}
 });
 // 每次保存的时候都会触发下面的方法
-movieSchema.pre('save', function (next) {
+categorySchema.pre('save', function (next) {
 	// 如果是新创建的
 	if (this.isNew) {
 		this.meta.createAt = this.meta.updateAt = Date.now();
@@ -41,7 +34,7 @@ movieSchema.pre('save', function (next) {
 
 // 添加一些静态的方法
 
-movieSchema.statics = {
+categorySchema.statics = {
 	// 查询所有数据,并按照更新时间排序
 	fetch: function (cb) {
 		return this.find({}).sort('meta.updateAt').exec(cb);
@@ -52,4 +45,4 @@ movieSchema.statics = {
 	}
 }
 // 导出
-module.exports = movieSchema;
+module.exports = categorySchema;

@@ -1,6 +1,7 @@
 const Movie = require('../controllers/movie');
 const User = require('../controllers/user');
 const Comment = require('../controllers/comment');
+const Category = require('../controllers/category');
 const Index = require('../controllers/index');
 const routes = function (app) {
 	app.use((request, response, next) => {
@@ -41,6 +42,13 @@ const routes = function (app) {
 	// user 列表页面
 	app.get('/admin/user/list', User.signinRequired, User.adminRequired, User.list);
 	// 评论
-	app.post('/movie/comment', User.signinRequired, Comment.save)
+	app.post('/movie/comment', User.signinRequired, Comment.save);
+
+	// category
+	app.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
+	app.get('/admin/category/admin', User.signinRequired, User.adminRequired, Category.admin);
+	app.post('/admin/category/new', User.signinRequired, User.adminRequired, Category.save);
+	// 删除分类
+	app.delete('/admin/category/detail', User.signinRequired, User.adminRequired, Category.delete);
 }
 module.exports = routes;

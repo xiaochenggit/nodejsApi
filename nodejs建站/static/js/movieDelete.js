@@ -1,7 +1,20 @@
 $(function (){
 	console.log('movieDelete 文件载入');
+	// category删除
+	$('.deleteCategory').click(function (){
+		var $this = $(this);
+		var id = $(this).attr('data-id');
+		$.ajax({
+			type : 'delete',
+			url : '/admin/category/detail?id=' + id
+		}).done(function (result){
+			if (result.success === 1) {
+				$this.parents('tr').remove();
+			}
+		})
+	});
 	// movie删除
-	$('#delete').click(function (){
+	$('.deleteMove').click(function (){
 		var $this = $(this);
 		var id = $(this).attr('data-id');
 		$.ajax({
@@ -72,4 +85,31 @@ $(function (){
 			}).appendTo($comment)
 		}
 	});
+
+	// 申请豆瓣数据
+	$("#douban").blur(function () {
+		// 26309788
+		const URL = 'https://api.douban.com/v2/movie/subject/';
+		var id = $(this).val();
+		if (id) {
+			$.ajax({
+				url: URL + id,
+				cache: true,
+				type: 'get',
+				dataType: 'jsonp',
+				crossDomain: true,
+				jsonp: 'callback',
+				success: function(data) {
+					$("#inputName").val(data.title);
+					$("#inputAuthor").val(data.directors[0].name);
+					$("#inputYear").val(data.year);
+					$("#inputCountry").val(data.countries[0]);
+					$("#inputLanguage").val('');
+					$("#inputPoster").val(data.images.large);
+					$("#inpustSwf").val('');
+					$("#inputSummary").html(data.summary);
+				}
+			})
+		}
+	})
 })
