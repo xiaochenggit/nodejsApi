@@ -21,6 +21,7 @@
 					<div class="page-footer">
 						<nav aria-label="...">
 						  <ul class="pager">
+						  	<% if(!q) { %>
 						    <li class="previous">
 						    	<a href="/movieSreach?id=<%=categoryId%>&page=<%= oldPage %>">
 						    		<span aria-hidden="true">&larr;</span> 上一页
@@ -31,6 +32,18 @@
 						    		<span aria-hidden="true">&rarr;</span>
 						    	</a>
 						    </li>
+						    <% } else { %>
+						    <li class="previous">
+						    	<a href="/movieSreach?q=<%=q%>&page=<%= oldPage %>">
+						    		<span aria-hidden="true">&larr;</span> 上一页
+						    	</a>
+						    </li>
+						    <li class="next">
+						    	<a href="/movieSreach?q=<%=q%>&page=<%=nextPage%>">下一页 
+						    		<span aria-hidden="true">&rarr;</span>
+						    	</a>
+						    </li>
+						    <% } %>
 						  </ul>
 						</nav>
 					</div>

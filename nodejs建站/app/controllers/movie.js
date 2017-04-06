@@ -4,8 +4,11 @@ const Category = require('../models/category');
 const Comment = require('../models/comment');
 // 替换数据专用
 const _ = require('underscore');
-// 
+// 时间格式化
 const Moment = require('moment');
+// fs 读写 和路径
+const fs = require('fs');
+const path = require('path');
 // 详情
 exports.movie = (request, response) => {
 	var id = request.params.id;
@@ -47,9 +50,7 @@ exports.save = (request ,response) => {
 				Category.find({},(error,categories) => {
 					categories.forEach( function(category, index) {
 						category.movies.forEach( function(element, index) {
-							console.log(element +'|'+ movie._id);
-							console.log(element == movie._id);
-							if (element == movie._id) {
+							if (element.toString() == _movie._id.toString()) {
 								category.movies.splice(index,1);
 							}
 						});
@@ -164,17 +165,20 @@ exports.update = (request, response) => {
 	var id = request.params.id;
 	if (id) {
 		Category.find({}, (error,categories) => {
-			Movie.findById(id, (err, movie) => {
+			Movie.findOne({ _id: id })
+			.populate({ path: 'category' })
+			.exec((err, movie) => {
 				if (err) {
 					console.log(err)
 				} else {
-					categories.forEach( function(element, index) {
-						if (movie.category.toString() == element._id.toString()) {
-							element.checked = true;
-						} else {
-							element.checked = false;
-						}
+					categories.forEach( function(category, index) {
+						movie.category.forEach( function(element, index) {
+							if (category.name.toString() == element.name.toString()) {
+								category['checked'] = true;
+							}
+						});
 					});
+					console.log(categories);
 					response.render('pages/movie-new',{
 						movie : movie,
 						title : '电影更新页面',
