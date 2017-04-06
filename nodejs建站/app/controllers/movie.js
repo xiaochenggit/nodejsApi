@@ -12,6 +12,11 @@ const path = require('path');
 // 详情
 exports.movie = (request, response) => {
 	var id = request.params.id;
+	Movie.update({_id: id}, {$inc: {pv: 1}}, function (err){
+		if (err) {
+			console.log(err);
+		}
+	})
 	Movie.findOne({ _id: id })
 		.populate({ path: 'category' })
 		.exec((err,movie) => {
@@ -215,4 +220,21 @@ exports.delete = (request, response) => {
 			}
 		})
 	}
+}
+exports.savePoster = (request, response,next) => {
+	next();
+	// var oldPath = request.body.movie.poster;
+	// var timestamp = Date.now();
+	// var arr = oldPath.split('.')
+	// var type = arr[arr.length-1];
+	// var newPath = path.join(__dirname, '../../','/static/images/' + timestamp + '.' + type);
+	// var fileReadStream = fs.createReadStream(oldPath);
+	// var fileWriteStream = fs.createWriteStream(newPath);
+	// fileReadStream.on('data', (chunk) => {
+	// 	// 写入到文件里
+	// 	fileWriteStream.write(chunk);
+	// })
+	// fileWriteStream.on('end', ()=> {
+	// 	next();
+	// })
 }

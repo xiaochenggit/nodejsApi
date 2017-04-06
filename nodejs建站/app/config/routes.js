@@ -18,7 +18,7 @@ const routes = function (app) {
 	app.get('/', Index.index);
 	// 电影详情
 	app.get('/movie/:id', Movie.movie);
-	app.post('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.save);
+	app.post('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.savePoster, Movie.save);
 	// 创建电影页面
 	app.get('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.new);
 	// 更新电影页面

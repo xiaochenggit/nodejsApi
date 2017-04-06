@@ -7,6 +7,7 @@
           <th>导演</th>
           <th>上映时间</th>
           <th>录入时间</th>
+          <th>PV</th>
           <th>查看</th>
           <th>更新</th>
           <th>删除</th>
@@ -19,6 +20,7 @@
 						<td><%= item.author %></td>
 						<td><%= item.year %></td>
             <td><%= moment(item.meta.updateAt).format('MM/DD/YYYY') %></td>
+            <td><%= item.pv %></td>
 						<td><a href="/movie/<%= item._id %>">查看</a></td>
 						<td><a href="/movie/update/<%= item._id %>">更新</a></td>
 						<td><button class="btn btn-danger deleteMovie"  data-id='<%= item._id %>'>删除</button ></td>

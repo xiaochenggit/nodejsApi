@@ -11,6 +11,10 @@ var movieSchema = new Schema({
 	country : String,
 	swf : String,
 	summary : String,
+	pv : {
+		type : Number,
+		default : 0
+	},
 	category : [{
 		type : ObjectId,
 		ref : 'Category'

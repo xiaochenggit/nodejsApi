@@ -14,7 +14,11 @@
 					<% category.movies.forEach(function (item) { %>
 					  <div class="col-sm-3 col-md-2">
 						<div class="thumbnail">
-							<img src=<%= item.poster %> alt="">
+							<% if (item.poster.indexOf('http') > -1 ) { %>
+								<img src="<%= item.poster %>" alt="">
+							<% } else { %>
+								<img src="upload/<%= item.poster %>" alt="">
+							<% } %>
 							<div class="caption">
 								<h3><%= item.name %></h3>
 								<p><%= item.author %></p>
