@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<form action="/admin/movie/new" method="post" >
+				<form action="/admin/movie/new" method="post" enctype="multipart/form-data">
 				  <% if(movie._id) { %>
 				  	<input type="hidden" name = 'movie[_id]' value="<%= movie._id %>">
 				  <% } %> 

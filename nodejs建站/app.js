@@ -33,6 +33,8 @@ app.use(session({
 		collection: 'session'
 	})
 }));
+// file 表单提交
+app.use(require('connect-multiparty')());
 // 一些日志信息
 if ('development' === app.get('env')) {
 	app.set('showStackError', true);

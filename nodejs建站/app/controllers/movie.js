@@ -46,6 +46,9 @@ exports.movie = (request, response) => {
 exports.save = (request ,response) => {
 	var id = request.body.movie._id;
 	var movieObj = request.body.movie;
+	if (request.poster) {
+		movieObj.poster = request.poster;
+	}
 	var _movie;
 	// 更新
 	if (id) {
@@ -183,7 +186,6 @@ exports.update = (request, response) => {
 							}
 						});
 					});
-					console.log(categories);
 					response.render('pages/movie-new',{
 						movie : movie,
 						title : '电影更新页面',
@@ -222,19 +224,22 @@ exports.delete = (request, response) => {
 	}
 }
 exports.savePoster = (request, response,next) => {
-	next();
-	// var oldPath = request.body.movie.poster;
-	// var timestamp = Date.now();
-	// var arr = oldPath.split('.')
-	// var type = arr[arr.length-1];
-	// var newPath = path.join(__dirname, '../../','/static/images/' + timestamp + '.' + type);
-	// var fileReadStream = fs.createReadStream(oldPath);
-	// var fileWriteStream = fs.createWriteStream(newPath);
-	// fileReadStream.on('data', (chunk) => {
-	// 	// 写入到文件里
-	// 	fileWriteStream.write(chunk);
-	// })
-	// fileWriteStream.on('end', ()=> {
-	// 	next();
-	// })
+	var fileDate = request.files.uploadPoster;
+	console.log(fileDate);
+	if (fileDate.originalFilename) {
+		var oldPath = fileDate.path;
+		var type = fileDate.type.split('/')[1];
+		console.log(type);
+		var imgName = Date.now() + '.' + type;
+		var newPath = path.join(__dirname,'../../','/static/upload/' + imgName);
+		console.log(oldPath);
+		fs.readFile(oldPath,(error, data) => {
+			fs.writeFile(newPath, data, () => {
+			   request.poster = imgName;	
+			   next();		
+			})
+		})
+	} else {
+		next();
+	}
 }

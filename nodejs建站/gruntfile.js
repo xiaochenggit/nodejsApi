@@ -35,7 +35,12 @@ module.exports = function(grunt){
 	          }
 	     	}
 		},
-
+		mochaTest : {
+			options: {
+				reporter: 'spec'
+			},
+			src : ['test/**/*.js']
+		},
 		concurrent : {
 			tasks : ["nodemon","watch"],
 			options : {
@@ -50,10 +55,11 @@ module.exports = function(grunt){
 	// 对app的安装，监控可自动重启 
 	grunt.loadNpmTasks("grunt-nodemon");
 	grunt.loadNpmTasks("grunt-concurrent");
-
+	grunt.loadNpmTasks("grunt-mocha-test");
 	// 配置 不会因为一些错误，而阻断整个grunt
 	grunt.option("force",true);
 	// 创建一个任务
 
 	grunt.registerTask("default",["concurrent"]);
+	grunt.registerTask("test",["mochaTest"]);
 }
