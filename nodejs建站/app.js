@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const fs = require('fs');
 // 打印信息需要
 const logger = require('morgan');
 // 用于用户在线体验
@@ -15,7 +16,28 @@ const port = 8080;
 // 实例化
 const app = express();
 // 连接数据库
-mongoose.connect('mongodb://localhost:27017/website')
+mongoose.connect('mongodb://localhost:27017/website');
+
+// models loading
+var models_path = __dirname + '/app/models';
+var walk = function (path) {
+	fs
+	.readdirSync(path)
+	.forEach((file) => {
+		var newPath = path + '/' + file;
+		var stat = fs.statSync(newPath);
+		if (stat.isFile()) {
+			if(/(.*)\.(js|coffee)/.test(file)) {
+				require(newPath);
+			}
+		}else if (stat.isDirectory()) {
+			walk(newPath);
+		}
+	})
+}
+walk(models_path);
+//
+
 // 设置模板目录 与引擎模板
 app.set('views',"./app/views");
 app.set('view engine','ejs');
