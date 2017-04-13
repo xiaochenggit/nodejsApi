@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const URL = require('url');
 // 列表
 function load_album_list(callback){
 	// 读取文件夹内容
@@ -26,7 +27,7 @@ function load_album_list(callback){
 	})
 }
 // 内容
-function load_album(album_name, callback) {
+function load_album(album_name, page, size,callback) {
 	fs.readdir('albums/' + album_name , (error, files) => {
 		if (error) {
 			callback(error);
@@ -36,9 +37,10 @@ function load_album(album_name, callback) {
 			var path = 'albums/' + album_name +'/';
 			(function reFiles (index) {
 				if (index == files.length) {
+					var pageArr = only_files.splice(page * size, size);
 					var obj = {
 						name: album_name,
-						photos: only_files
+						photos: pageArr
 					};
 					callback(null, obj)
 					return ;
@@ -74,9 +76,14 @@ function handle_list_album(request,response) {
 	})
 }
 function handle_get_album(request,response) {
+	var urlObj = URL.parse(request.url, true);
+	console.log('')
+	var page = urlObj.query.page ? parseInt(urlObj.query.page) : 0;
+	var size = urlObj.query.page_size ? parseInt(urlObj.query.page_size) : 20; 
+	var url = urlObj.pathname;
 	// 例子 /albums/xxxx.json
-	var album_name = request.url.substr(7,request.url.length - 12);
-	load_album(album_name, (error,data) => {
+	var album_name = url.substr(7,url.length - 12);
+	load_album(album_name, page, size,(error,data) => {
 		if (error) {
 			send_error(response,error);
 			return ;
@@ -97,12 +104,16 @@ function send_error (response,error) {
 }
 http.createServer( (request , response) => {
 	console.log('REQUEST' + request.method + '---' + request.url);
+	// parse 解析 URL
+	var urlObj = URL.parse(request.url, true);
+	var url = urlObj.pathname;
+	console.log(urlObj);
 	// 路由
-	if (request.url == '/albums.json') {
+	if (url == '/albums.json') {
 		console.log('add');
 		handle_list_album(request, response);
-	} else if (request.url.substr(0,7) == '/albums'
-		&& request.url.substr(request.url.length - 5) == '.json') {
+	} else if (url.substr(0,7) == '/albums'
+		&& url.substr(url.length - 5) == '.json') {
 		handle_get_album(request, response);
 	}
 	// readAlbum((error, albums) => {
